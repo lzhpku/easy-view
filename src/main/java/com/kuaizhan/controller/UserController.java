@@ -8,6 +8,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriverService;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -25,9 +26,17 @@ public class UserController {
     @Autowired
     public WebDriver driver;
 
-    public static String videoHtml = "file:///Users/lanzheng/workspace/easy-view/video.html";
-    public static String imgHtml = "file:///Users/lanzheng/workspace/easy-view/img.html";
-    public static String pdfHtml = "file:///Users/lanzheng/workspace/easy-view/pdf.html";
+    @Value("${html.path}")
+    public String htmlPath;
+
+    @Value("${html.video}")
+    public String videoHtml;
+
+    @Value("${html.img}")
+    public String imgHtml;
+
+    @Value("${html.pdf}")
+    public String pdfHtml;
 
     @Autowired
     public ChromeDriverService chromeDriverService;
@@ -67,7 +76,7 @@ public class UserController {
 
     @Async
     public void showVideo(String uriStr) {
-        driver.get(videoHtml);
+        driver.get(htmlPath + videoHtml);
 
         WebElement element_video = driver.findElement(By.tagName("video"));
         WebElement element_source = driver.findElement(By.tagName("source"));
@@ -98,14 +107,13 @@ public class UserController {
 
     @Async
     public void showImg(String uriStr) {
-        driver.get(imgHtml);
+        driver.get(htmlPath + imgHtml);
 
         WebElement element_img = driver.findElement(By.tagName("img"));
 
         JavascriptExecutor javascriptExecutor = (JavascriptExecutor) driver;
 
         javascriptExecutor.executeScript("arguments[0].src='" + uriStr + "'", element_img);
-        javascriptExecutor.executeScript("arguments[0].load()", element_img);
 
         WebElement full = driver.findElement(By.tagName("button"));
         full.click();
@@ -113,7 +121,7 @@ public class UserController {
 
     @Async
     public void showPdf(String uriStr) {
-        driver.get(pdfHtml);
+        driver.get(htmlPath + pdfHtml);
     }
 
 }
