@@ -4,14 +4,15 @@
     <meta name="viewport" content="width=device-width">
 </head>
 <body>
-<video controls="controls" name="media" controls="controls" >
+<video controls="controls" name="media" >
     <source src="https://pic.kuaizhan.com//g3/bd/2e/600c-7fcb-4ea7-b2e4-1861eb61b8c944.mp4" type="video/mp4">
 </video>
 
+
+<button onclick="full()"></button>
+
 <script>
-    setTimeout(() => {
-        document.getElementsByTagName("video")[0].requestFullscreen();
-    }, 2000)
+    function full(){document.getElementsByTagName("video")[0].webkitRequestFullScreen();}
 </script>
 </body>
 </html>

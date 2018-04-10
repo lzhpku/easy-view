@@ -83,6 +83,9 @@ public class UserController {
         JavascriptExecutor javascriptExecutor = (JavascriptExecutor)driver;
 
         javascriptExecutor.executeScript("arguments[0].play()", element_video);
+
+        WebElement full = driver.findElement(By.tagName("button"));
+        full.click();
         //对video这个元素执行暂停操作
 //        javascriptExecutor.executeScript("arguments[0].pause()", element_video);
 //        //对video这个元素执行重新加载视频的操作
