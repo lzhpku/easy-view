@@ -7,7 +7,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriverService;
 import org.openqa.selenium.remote.DesiredCapabilities;
-import org.openqa.selenium.remote.RemoteWebDriver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,7 +22,8 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 public class UserController {
 
-    public static WebDriver driver;
+    @Autowired
+    public WebDriver driver;
 
     public static String videoHtml = "file:///Users/lanzheng/workspace/easy-view/video.html";
     public static String imgHtml = "file:///Users/lanzheng/workspace/easy-view/img.html";
@@ -43,29 +43,31 @@ public class UserController {
      * */
     public void test(
             @RequestParam(value = "uri", required = true) String uriStr,
-            @RequestParam(value = "type", required = true) String type
+            @RequestParam(value = "type", required = true) String type,
+            @RequestParam(value = "action", required = true) String action
     ) {
-        if (type.equals("video")) {
-            playVideo(uriStr);
-        } else if (type.equals("img")) {
-            playImg(uriStr);
-        } else if (type.equals("pdf")) {
-            playPdf(uriStr);
+        if (action.equals("pause") && type.equals("video")) {
+            pauseVideo();
+            return;
+        } else if (action.equals("play") && type.endsWith("video")) {
+            replayVideo();
+            return;
         }
+
+        if (type.equals("video")) {
+            showVideo(uriStr);
+        } else if (type.equals("img")) {
+            showImg(uriStr);
+        } else if (type.equals("pdf")) {
+            showPdf(uriStr);
+        }
+
         return;
     }
 
     @Async
-    public void playVideo(String uriStr)
-    {
-        if (driver != null) {
-            driver.close();
-        }
-        driver = new RemoteWebDriver(chromeDriverService.getUrl(), desiredCapabilities);
+    public void showVideo(String uriStr) {
         driver.get(videoHtml);
-
-        WebElement full = driver.findElement(By.tagName("button"));
-        full.click();
 
         WebElement element_video = driver.findElement(By.tagName("video"));
         WebElement element_source = driver.findElement(By.tagName("source"));
@@ -76,20 +78,27 @@ public class UserController {
         javascriptExecutor.executeScript("arguments[0].load()", element_video);
         javascriptExecutor.executeScript("arguments[0].play()", element_video);
 
-//      javascriptExecutor.executeScript("arguments[0].pause()", element_video);
+        WebElement full = driver.findElement(By.tagName("button"));
+        full.click();
     }
 
     @Async
-    public void playImg(String uriStr)
-    {
-        if (driver != null) {
-            driver.close();
-        }
-        driver = new RemoteWebDriver(chromeDriverService.getUrl(), desiredCapabilities);
-        driver.get(imgHtml);
+    public void pauseVideo() {
+        WebElement element_video = driver.findElement(By.tagName("video"));
+        JavascriptExecutor javascriptExecutor = (JavascriptExecutor) driver;
+        javascriptExecutor.executeScript("arguments[0].pause()", element_video);
+    }
 
-        WebElement full = driver.findElement(By.tagName("button"));
-        full.click();
+    @Async
+    public void replayVideo() {
+        WebElement element_video = driver.findElement(By.tagName("video"));
+        JavascriptExecutor javascriptExecutor = (JavascriptExecutor) driver;
+        javascriptExecutor.executeScript("arguments[0].play()", element_video);
+    }
+
+    @Async
+    public void showImg(String uriStr) {
+        driver.get(imgHtml);
 
         WebElement element_img = driver.findElement(By.tagName("img"));
 
@@ -97,26 +106,14 @@ public class UserController {
 
         javascriptExecutor.executeScript("arguments[0].src='" + uriStr + "'", element_img);
         javascriptExecutor.executeScript("arguments[0].load()", element_img);
+
+        WebElement full = driver.findElement(By.tagName("button"));
+        full.click();
     }
 
     @Async
-    public void playPdf(String uriStr)
-    {
-        if (driver != null) {
-            driver.close();
-        }
-        driver = new RemoteWebDriver(chromeDriverService.getUrl(), desiredCapabilities);
+    public void showPdf(String uriStr) {
         driver.get(pdfHtml);
-
-//        WebElement full = driver.findElement(By.tagName("button"));
-//        full.click();
-//
-//        WebElement element_pdf = driver.findElement(By.tagName("embed"));
-//
-//        JavascriptExecutor javascriptExecutor = (JavascriptExecutor) driver;
-//
-//        javascriptExecutor.executeScript("arguments[0].src='" + uriStr + "'", element_pdf);
-//        javascriptExecutor.executeScript("arguments[0].load()", element_pdf);
     }
 
 }

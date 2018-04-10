@@ -1,9 +1,11 @@
 package com.kuaizhan.Driver;
 
 import lombok.extern.slf4j.Slf4j;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriverService;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.RemoteWebDriver;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
@@ -42,8 +44,8 @@ public class ChromeDriver {
         return capabilities;
     }
 
-//    @Bean
-//    public WebDriver getWebDriver(ChromeDriverService service, DesiredCapabilities capabilities) {
-//        return new RemoteWebDriver(service.getUrl(), capabilities);
-//    }
+    @Bean
+    public WebDriver getWebDriver(ChromeDriverService service, DesiredCapabilities capabilities) {
+        return new RemoteWebDriver(service.getUrl(), capabilities);
+    }
 }
