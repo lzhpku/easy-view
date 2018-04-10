@@ -35,6 +35,7 @@ public class ChromeDriver {
     public DesiredCapabilities getDesiredCapabilities() {
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--start-fullscreen");
+        options.addArguments("disable-infobars");
         DesiredCapabilities capabilities = DesiredCapabilities.chrome();
         capabilities.setCapability(ChromeOptions.CAPABILITY, options);
         capabilities.setCapability("video", "True");

@@ -78,14 +78,16 @@ public class UserController {
 //        driver.navigate().to(uriStr);
         driver.get("file:///Users/Martin/project/JavaProjection/easy-view/video.html");
 
+        WebElement full = driver.findElement(By.tagName("button"));
+        full.click();
+
         WebElement element_video = driver.findElement(By.tagName("video"));
         //对video这个元素执行播放操作
         JavascriptExecutor javascriptExecutor = (JavascriptExecutor)driver;
 
         javascriptExecutor.executeScript("arguments[0].play()", element_video);
 
-        WebElement full = driver.findElement(By.tagName("button"));
-        full.click();
+
         //对video这个元素执行暂停操作
 //        javascriptExecutor.executeScript("arguments[0].pause()", element_video);
 //        //对video这个元素执行重新加载视频的操作
