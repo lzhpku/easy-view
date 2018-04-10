@@ -1,20 +1,26 @@
 package com.kuaizhan.controller;
 
 import lombok.extern.slf4j.Slf4j;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriverService;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.openqa.selenium.WebElement;
 
-import java.awt.*;
+
+import java.awt.Desktop;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.concurrent.*;
+import java.util.List;
+import org.openqa.selenium.JavascriptExecutor;
+
 
 /**
  * Created by lanzheng on 2017/11/28.
@@ -58,72 +64,31 @@ public class UserController {
     public void test(
             @RequestParam(value = "uri", required = false) String uriStr
     ) {
-//        if (driver != null) {
-//            driver.close();
-//        }
-//        driver = new RemoteWebDriver(chromeDriverService.getUrl(), desiredCapabilities);
+          play(uriStr);
+          return;
+    }
+
+    @Async
+    public void play(String uriStr)
+    {
+        if (driver != null) {
+            driver.close();
+        }
+        driver = new RemoteWebDriver(chromeDriverService.getUrl(), desiredCapabilities);
 //        driver.navigate().to(uriStr);
-//        return;
-        int timeout = 5; //秒.
-        ExecutorService executor = Executors.newSingleThreadExecutor();
-        Boolean result = false;
-        Future<Boolean> future = executor.submit(new MyJob(chromeDriverService, desiredCapabilities, uriStr));
-        try {
-            result = future.get(timeout * 1000, TimeUnit.MILLISECONDS);
-            System.out.println(result);
-        } catch (InterruptedException e) {
-            System.out.println("线程中断出错。");
-            future.cancel(true);// 中断执行此任务的线程
-        } catch (ExecutionException e) {
-            System.out.println("线程服务出错。");
-            future.cancel(true);// 中断执行此任务的线程
-        } catch (TimeoutException e) {// 超时异常
-            System.out.println("超时。");
-//            try {
-//                Field runner = future.getClass().getDeclaredField("runner");
-//                runner.setAccessible(true);
-//                Thread execThread = (Thread) runner.get(future);
-//                execThread.stop();
-//                System.out.println("强行杀死进程");
-//                System.gc();
-//            } catch (NoSuchFieldException e1) {
-//                e1.printStackTrace();
-//            } catch (IllegalAccessException e1) {
-//                e1.printStackTrace();
-//            }
-            future.cancel(true);
-        } finally {
-            System.out.println("线程服务关闭。");
-            executor.shutdown();
-        }
-        return;
+        driver.get("file:///Users/Martin/project/JavaProjection/easy-view/video.html");
+
+        WebElement element_video = driver.findElement(By.tagName("video"));
+        //对video这个元素执行播放操作
+        JavascriptExecutor javascriptExecutor = (JavascriptExecutor)driver;
+
+        javascriptExecutor.executeScript("arguments[0].play()", element_video);
+        //对video这个元素执行暂停操作
+//        javascriptExecutor.executeScript("arguments[0].pause()", element_video);
+//        //对video这个元素执行重新加载视频的操作
+//        javascriptExecutor.executeScript("arguments[0].load()", element_video);
     }
 
-    static class MyJob implements Callable<Boolean> {
 
-        public ChromeDriverService chromeDriverService;
-        public DesiredCapabilities desiredCapabilities;
-        public String uriStr;
 
-        public MyJob(ChromeDriverService chromeDriverService, DesiredCapabilities desiredCapabilities, String uriStr) {
-            this.chromeDriverService = chromeDriverService;
-            this.desiredCapabilities = desiredCapabilities;
-            this.uriStr = uriStr;
-        }
-
-        public Boolean call() {
-            if (driver != null) {
-                driver.close();
-            }
-//            driver.close();
-            driver = new RemoteWebDriver(chromeDriverService.getUrl(), desiredCapabilities);
-            driver.navigate().to(uriStr);
-
-            if (Thread.interrupted()) {
-                return false;
-            }
-            return true;
-        }
-    }
 }
-

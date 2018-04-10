@@ -37,6 +37,7 @@ public class ChromeDriver {
         options.addArguments("--start-fullscreen");
         DesiredCapabilities capabilities = DesiredCapabilities.chrome();
         capabilities.setCapability(ChromeOptions.CAPABILITY, options);
+        capabilities.setCapability("video", "True");
         return capabilities;
     }
 
