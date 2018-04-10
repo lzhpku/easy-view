@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>PDF.js viewer</title>
+    <script src="http://pic.kuaizhan.com//g3/d3/1d/101a-3f6f-40c8-9490-3be2a98a613580.js"></script>
+    <link rel="stylesheet" href="http://pic.kuaizhan.com//g3/81/b4/66ba-ac61-4728-99ef-16778c108e0354.css" />
+
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+</head>
+
+<body>
+<div class="pdfjs">
+    <!--#include virtual="bower_components/pdf.js-viewer/viewer.html" -->
+</div>
+
+<script>
+    // note that the file can also be a Uint8Array if you want to serve binary data
+    var file = 'http://pic.kuaizhan.com//g3/75/27/5163-9bef-418d-ae48-09cc6d6b4a9f18.pdf';
+
+    // This initializes the webviewer, the file may be passed in to it to initialize the viewer with a pdf directly
+    window.PDFJS.webViewerLoad();
+
+    // open a file in the viewer
+    window.PDFViewerApplication.open(file);
+</script>
+
+<button onclick="full()"></button>
+<script>
+    function full() {
+        document.getElementsByTagName("embed")[0].webkitRequestFullScreen();
+    }
+</script>
+
+</body>
+</html>
