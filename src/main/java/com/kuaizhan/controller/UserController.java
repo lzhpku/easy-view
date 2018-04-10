@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 
 /**
  * Created by lanzheng on 2017/11/28.
@@ -122,6 +124,11 @@ public class UserController {
     @Async
     public void showPdf(String uriStr) {
         driver.get(htmlPath + pdfHtml);
+
+        List<WebElement> element_buttons = driver.findElements(By.tagName("button"));
+        for (int i = 0; i < element_buttons.size(); i ++) {
+            System.out.println("button : " + element_buttons.get(i).getText());
+        }
     }
 
 }
