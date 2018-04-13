@@ -1,6 +1,6 @@
 # Compiled class file
 *.class
-
+target/classes/application.properties
 # Log file
 *.log
 
