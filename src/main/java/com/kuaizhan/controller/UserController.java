@@ -138,6 +138,8 @@ public class UserController {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+//        JavascriptExecutor javascriptExecutor = (JavascriptExecutor) driver;
+//        javascriptExecutor.executeScript("arguments[0].click()", webElement);
         webElement.click();
     }
 
@@ -149,6 +151,9 @@ public class UserController {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+        JavascriptExecutor javascriptExecutor = (JavascriptExecutor) driver;
+        javascriptExecutor.executeScript("arguments[0].click()", webElement);
+//        webElement.click();
     }
 
     @Async
@@ -159,6 +164,8 @@ public class UserController {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        webElement.click();
+        JavascriptExecutor javascriptExecutor = (JavascriptExecutor) driver;
+        javascriptExecutor.executeScript("arguments[0].click()", webElement);
+//        webElement.click();
     }
 }
