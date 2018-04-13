@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+import static java.lang.Thread.sleep;
+
 
 /**
  * Created by lanzheng on 2017/11/28.
@@ -125,8 +127,14 @@ public class UserController {
     public void showPdf(String uriStr) {
         driver.get(pdfHtml + "?file=" + uriStr);
 
+
         List<WebElement> element_buttons = driver.findElements(By.tagName("button"));
-        element_buttons.get(element_buttons.size() - 1).click();
+        try {
+            sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        element_buttons.get(element_buttons.size()-1).click();
     }
 
 }
