@@ -55,7 +55,7 @@ public class UserController {
             @RequestParam(value = "uri", required = true) String uriStr,
             @RequestParam(value = "type", required = true) String type,
             @RequestParam(value = "action", required = true) String action,
-            @RequestParam(value = "index", required = false) int index,
+            @RequestParam(value = "index", required = true) int index,
             @RequestParam(value = "direction", required = false) String direction
     ) {
         if (action.equals("pause") && type.equals("video")) {
@@ -177,18 +177,48 @@ public class UserController {
         }
 
         Actions action = new Actions(driver);
-        if( "up".equals(direction)) {
-            action.sendKeys(Keys.UP).perform();
-            action.sendKeys(Keys.NULL).perform();
-        }else if("down".equals(direction)) {
-            action.sendKeys(Keys.DOWN).perform();
-            action.sendKeys(Keys.NULL).perform();
-        }else if("left".equals(direction)){
-            action.sendKeys(Keys.LEFT).perform();
-            action.sendKeys(Keys.NULL).perform();
-        }else if("right".equals(direction)){
-            action.sendKeys(Keys.RIGHT).perform();
-            action.sendKeys(Keys.NULL).perform();
+        if (direction != null) {
+            JavascriptExecutor javascriptExecutor = (JavascriptExecutor) driver;
+
+            WebElement webElement = driver.findElement(By.tagName("body"));
+            if( "up".equals(direction)) {
+                javascriptExecutor.executeScript("var e1 = new Event(\"keydown\");\n" +
+                        "  e1.keyCode=38;\n" +
+                        "  e1.which=e1.keyCode;\n" +
+                        "  document.dispatchEvent(e1);\n" +
+                        "var e2 = new Event(\"keyup\");\n" +
+                        "  e2.keyCode=38;\n" +
+                        "  e2.which=e2.keyCode;\n" +
+                        "  setTimeout(() => {document.dispatchEvent(e2)}, 500);\n");
+            }else if("down".equals(direction)) {
+                javascriptExecutor.executeScript("var e1 = new Event(\"keydown\");\n" +
+                        "  e1.keyCode=40;\n" +
+                        "  e1.which=e1.keyCode;\n" +
+                        "  document.dispatchEvent(e1);\n" +
+                        "var e2 = new Event(\"keyup\");\n" +
+                        "  e2.keyCode=40;\n" +
+                        "  e2.which=e2.keyCode;\n" +
+                        "  setTimeout(() => {document.dispatchEvent(e2)}, 500);\n");
+            }else if("left".equals(direction)){
+                javascriptExecutor.executeScript("var e1 = new Event(\"keydown\");\n" +
+                        "  e1.keyCode=37;\n" +
+                        "  e1.which=e1.keyCode;\n" +
+                        "  document.dispatchEvent(e1);\n" +
+                        "var e2 = new Event(\"keyup\");\n" +
+                        "  e2.keyCode=37;\n" +
+                        "  e2.which=e2.keyCode;\n" +
+                        "  setTimeout(() => {document.dispatchEvent(e2)}, 500);\n");
+            }else if("right".equals(direction)){
+                javascriptExecutor.executeScript("var e1 = new Event(\"keydown\");\n" +
+                        "  e1.keyCode=39;\n" +
+                        "  e1.which=e1.keyCode;\n" +
+                        "  document.dispatchEvent(e1);\n" +
+                        "var e2 = new Event(\"keyup\");\n" +
+                        "  e2.keyCode=39;\n" +
+                        "  e2.which=e2.keyCode;\n" +
+                        "  setTimeout(() => {document.dispatchEvent(e2)}, 500);\n");
+            }
         }
+
     }
 }
