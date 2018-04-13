@@ -128,13 +128,15 @@ public class UserController {
         driver.get(pdfHtml + "?file=" + uriStr);
 
 
-        List<WebElement> element_buttons = driver.findElements(By.tagName("button"));
+//        List<WebElement> element_buttons = driver.findElements(By.tagName("button"));
+        WebElement webElement = driver.findElement(By.id("fullScreen"));
         try {
             sleep(2000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        element_buttons.get(element_buttons.size()-1).click();
+//        element_buttons.get(element_buttons.size()-1).click();
+        webElement.click();
     }
 
 }
