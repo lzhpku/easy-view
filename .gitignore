@@ -28,3 +28,6 @@ mvnw
 mvnw.cmd
 index.js
 pdf.html
+
+target/
+.gitignore

@@ -138,34 +138,30 @@ public class UserController {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-//        JavascriptExecutor javascriptExecutor = (JavascriptExecutor) driver;
-//        javascriptExecutor.executeScript("arguments[0].click()", webElement);
         webElement.click();
     }
 
     @Async
     public void nextPdf() {
         WebElement webElement = driver.findElement(By.id("fullScreen_next"));
-        try {
-            sleep(2000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            sleep(2000);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
         JavascriptExecutor javascriptExecutor = (JavascriptExecutor) driver;
         javascriptExecutor.executeScript("arguments[0].click()", webElement);
-//        webElement.click();
     }
 
     @Async
     public void previousPdf() {
         WebElement webElement = driver.findElement(By.id("fullScreen_previous"));
-        try {
-            sleep(2000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            sleep(2000);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
         JavascriptExecutor javascriptExecutor = (JavascriptExecutor) driver;
         javascriptExecutor.executeScript("arguments[0].click()", webElement);
-//        webElement.click();
     }
 }
