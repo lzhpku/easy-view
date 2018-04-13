@@ -142,7 +142,7 @@ public class UserController {
     }
 
     @Async
-    public void showPdfNext() {
+    public void nextPdf() {
         WebElement webElement = driver.findElement(By.id("fullScreen_next"));
         try {
             sleep(2000);
@@ -152,7 +152,7 @@ public class UserController {
     }
 
     @Async
-    public void showPdfPrevious() {
+    public void previousPdf() {
         WebElement webElement = driver.findElement(By.id("fullScreen_previous"));
         try {
             sleep(2000);
