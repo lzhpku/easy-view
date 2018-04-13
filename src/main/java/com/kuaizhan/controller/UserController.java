@@ -14,8 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-
 import static java.lang.Thread.sleep;
 
 
@@ -48,11 +46,11 @@ public class UserController {
     @Autowired
     public DesiredCapabilities desiredCapabilities;
 
-    @RequestMapping("/test")
+    @RequestMapping("/apiv1")
     /**
-     * https://pic.kuaizhan.com//g3/bd/2e/600c-7fcb-4ea7-b2e4-1861eb61b8c944.mp4
-     * http://pic.kuaizhan.com/004B0DD0D04852C4AB026DF7B4FD4A28.png
-     * http://pic.kuaizhan.com//g3/75/27/5163-9bef-418d-ae48-09cc6d6b4a9f18.pdf
+     * @params uri 资源名
+     * @params type 资源类型, video, img, pdf
+     * @params action 操作类型, show, pause, replay, previous, next
      * */
     public void test(
             @RequestParam(value = "uri", required = true) String uriStr,
@@ -64,6 +62,14 @@ public class UserController {
             return;
         } else if (action.equals("replay") && type.endsWith("video")) {
             replayVideo();
+            return;
+        }
+
+        if (action.equals("next") && type.equals("pdf")) {
+            nextPdf();
+            return;
+        } else if (action.equals("previous") && type.equals("pdf")) {
+            previousPdf();
             return;
         }
 
@@ -127,16 +133,24 @@ public class UserController {
     public void showPdf(String uriStr) {
         driver.get(pdfHtml + "?file=" + uriStr);
 
-
-//        List<WebElement> element_buttons = driver.findElements(By.tagName("button"));
         WebElement webElement = driver.findElement(By.id("fullScreen"));
         try {
             sleep(2000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-//        element_buttons.get(element_buttons.size()-1).click();
         webElement.click();
     }
 
+    @Async
+    public void previousPdf() {
+        WebElement webElement = driver.findElement(By.id("previousButton"));
+        webElement.click();
+    }
+
+    @Async
+    public void nextPdf() {
+        WebElement webElement = driver.findElement(By.id("nextButton"));
+        webElement.click();
+    }
 }
