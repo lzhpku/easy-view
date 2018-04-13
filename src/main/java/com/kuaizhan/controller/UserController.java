@@ -1,11 +1,9 @@
 package com.kuaizhan.controller;
 
 import lombok.extern.slf4j.Slf4j;
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriverService;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -57,7 +55,8 @@ public class UserController {
             @RequestParam(value = "uri", required = true) String uriStr,
             @RequestParam(value = "type", required = true) String type,
             @RequestParam(value = "action", required = true) String action,
-            @RequestParam(value = "index", required = false) int index
+            @RequestParam(value = "index", required = false) int index,
+            @RequestParam(value = "direction", required = false) String direction
     ) {
         if (action.equals("pause") && type.equals("video")) {
             pauseVideo();
@@ -76,7 +75,7 @@ public class UserController {
         }
 
         if (action.equals("shift") && type.equals("link")) {
-            shiftLink(uriStr, index);
+            shiftLink(direction, index);
             return;
         }
 
@@ -170,11 +169,26 @@ public class UserController {
     }
 
     @Async
-    public void shiftLink(String uriStr, int index) {
+    public void shiftLink(String direction, int index) {
         List<WebElement> webElements = driver.findElements(By.className("scenebar-thumb"));
         int size = webElements.size();
         if (index >= 0 && index < size) {
             webElements.get(index).click();
+        }
+
+        Actions action = new Actions(driver);
+        if( "up".equals(direction)) {
+            action.sendKeys(Keys.UP).perform();
+            action.sendKeys(Keys.NULL).perform();
+        }else if("down".equals(direction)) {
+            action.sendKeys(Keys.DOWN).perform();
+            action.sendKeys(Keys.NULL).perform();
+        }else if("left".equals(direction)){
+            action.sendKeys(Keys.LEFT).perform();
+            action.sendKeys(Keys.NULL).perform();
+        }else if("right".equals(direction)){
+            action.sendKeys(Keys.RIGHT).perform();
+            action.sendKeys(Keys.NULL).perform();
         }
     }
 }
