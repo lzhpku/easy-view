@@ -139,4 +139,27 @@ public class UserController {
         webElement.click();
     }
 
+    @Async
+    public void showPdfNext() {
+        WebElement webElement = driver.findElement(By.id("fullScreen_next"));
+        try {
+            sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        webElement.click();
+    }
+
+    @Async
+    public void showPdfPrevious() {
+        WebElement webElement = driver.findElement(By.id("fullScreen_previous"));
+        try {
+            sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        webElement.click();
+    }
+
+
 }

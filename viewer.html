@@ -2329,9 +2329,17 @@ html[dir='rtl'] #documentPropertiesOverlay .row > * {
     </div> <!-- outerContainer -->
     <div id="printContainer"></div>
     <button id="fullScreen" onclick="full()"></button>
+    <button id="fullScreen_next" onclick="next()"></button>
+    <button id="fullScreen_previous" onclick="previous()"></button>
     <script>
         function full() {
             document.getElementById("presentationMode").click();
+        }
+        function next() {
+            document.getElementById("next").click()
+        }
+        function previous() {
+            document.getElementById("previous").click()
         }
     </script>
   </body>
