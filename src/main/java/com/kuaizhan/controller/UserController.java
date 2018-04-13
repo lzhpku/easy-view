@@ -60,7 +60,7 @@ public class UserController {
         if (action.equals("pause") && type.equals("video")) {
             pauseVideo();
             return;
-        } else if (action.equals("play") && type.endsWith("video")) {
+        } else if (action.equals("replay") && type.endsWith("video")) {
             replayVideo();
             return;
         }
@@ -123,12 +123,10 @@ public class UserController {
 
     @Async
     public void showPdf(String uriStr) {
-        driver.get(htmlPath + pdfHtml);
+        driver.get(pdfHtml + "?file=" + uriStr);
 
         List<WebElement> element_buttons = driver.findElements(By.tagName("button"));
-        for (int i = 0; i < element_buttons.size(); i ++) {
-            System.out.println("button : " + element_buttons.get(i).getText());
-        }
+        element_buttons.get(element_buttons.size() - 1).click();
     }
 
 }
