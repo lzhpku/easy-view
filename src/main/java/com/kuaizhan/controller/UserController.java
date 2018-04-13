@@ -127,7 +127,6 @@ public class UserController {
     public void showPdf(String uriStr) {
         driver.get(pdfHtml + "?file=" + uriStr);
 
-
 //        List<WebElement> element_buttons = driver.findElements(By.tagName("button"));
         WebElement webElement = driver.findElement(By.id("fullScreen"));
         try {
