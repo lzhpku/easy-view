@@ -13,7 +13,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
+import java.util.List;
 import static java.lang.Thread.sleep;
 
 
@@ -49,13 +49,15 @@ public class UserController {
     @RequestMapping("/apiv1")
     /**
      * @params uri 资源名
-     * @params type 资源类型, video, img, pdf
-     * @params action 操作类型, show, pause, replay, previous, next
+     * @params type 资源类型, video, img, pdf, link
+     * @params action 操作类型, show, pause, replay, previous, next, shift
+     * @prames index 全景图下标
      * */
     public void test(
             @RequestParam(value = "uri", required = true) String uriStr,
             @RequestParam(value = "type", required = true) String type,
-            @RequestParam(value = "action", required = true) String action
+            @RequestParam(value = "action", required = true) String action,
+            @RequestParam(value = "index", required = false) int index
     ) {
         if (action.equals("pause") && type.equals("video")) {
             pauseVideo();
@@ -73,12 +75,19 @@ public class UserController {
             return;
         }
 
+        if (action.equals("shift") && type.equals("link")) {
+            shiftLink(uriStr, index);
+            return;
+        }
+
         if (type.equals("video")) {
             showVideo(uriStr);
         } else if (type.equals("img")) {
             showImg(uriStr);
         } else if (type.equals("pdf")) {
             showPdf(uriStr);
+        } else if (type.equals("link")) {
+            showLink(uriStr);
         }
 
         return;
@@ -144,11 +153,6 @@ public class UserController {
     @Async
     public void nextPdf() {
         WebElement webElement = driver.findElement(By.id("fullScreen_next"));
-//        try {
-//            sleep(2000);
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
         JavascriptExecutor javascriptExecutor = (JavascriptExecutor) driver;
         javascriptExecutor.executeScript("arguments[0].click()", webElement);
     }
@@ -156,12 +160,21 @@ public class UserController {
     @Async
     public void previousPdf() {
         WebElement webElement = driver.findElement(By.id("fullScreen_previous"));
-//        try {
-//            sleep(2000);
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
         JavascriptExecutor javascriptExecutor = (JavascriptExecutor) driver;
         javascriptExecutor.executeScript("arguments[0].click()", webElement);
+    }
+
+    @Async
+    public void showLink(String uriStr) {
+        driver.get(uriStr);
+    }
+
+    @Async
+    public void shiftLink(String uriStr, int index) {
+        List<WebElement> webElements = driver.findElements(By.className("scenebar-thumb"));
+        int size = webElements.size();
+        if (index >= 0 && index < size) {
+            webElements.get(index).click();
+        }
     }
 }
