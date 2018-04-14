@@ -142,7 +142,7 @@ public class UserController {
         driver.get(pdfHtml + "?file=" + uriStr);
         WebElement webElement = driver.findElement(By.id("fullScreen"));
         try {
-            sleep(2000);
+            sleep(300);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
